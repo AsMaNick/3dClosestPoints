@@ -23,20 +23,20 @@
 				<input type='number' name="maxX" style='height: 18px' placeholder="mxX" min="1" max="300" value="300"> 
 				<input type='number' name="maxY" style='height: 18px' placeholder="mxY" min="1" max="300" value="300"> 
 				<input type='number' name="maxZ" style='height: 18px' placeholder="mxZ" min="1" max="300" value="300"> <br>
-				<button onclick='buildRandomPointsOnclick()' style="margin-top: 8px"> Build random </button> <br>
+				<button id='build_random_button' onclick='buildRandomPointsOnclick()' style="margin-top: 8px"> Build random </button> <br>
 				<span class="error" id="sp1"></span> <br>
 				
 				<select id="select_sample" size="1" style="height: 23px">
 					<option>Sample 1</option>
 					<option>Sample 2</option>
 				</select>
-				<button style='width:165px; font-size: 12px;' onclick='loadSampleOnclick()'> Load sample </button> <br>
+				<button id='load_sample_button' style='width:165px; font-size: 12px;' onclick='loadSampleOnclick()'> Load sample </button> <br>
 				<span class="error" id="sp2"></span> <br>
 				
-				<button style='font-size: 12px;' onclick='enable_adding_city_onclick()' name='add_city_button'> Add point manually </button> <br>
+				<button id='add_point_man_button' style='font-size: 12px;' onclick='enable_adding_city_onclick()' name='add_city_button'> Add point manually </button> <br>
 				<span class="error" id="sp3"></span> <br>
 				
-				<button style='font-size: 12px;' onclick='clearPointsOnclick()'> Clear all points </button> <br>
+				<button id='clear_points_button' style='font-size: 12px;' onclick='clearPointsOnclick()'> Clear all points </button> <br>
 				<span class="error" id="sp4"></span> <br>
 			</div>
 			

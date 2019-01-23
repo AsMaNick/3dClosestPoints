@@ -163,6 +163,23 @@ function rec(l, r) {
 	mergeSubarrays(l, mid, r);
 }
 
+function setDisabledValues(val) {
+	document.getElementById('v_type').disabled = val;
+	document.getElementById('visualize_button').disabled = val;
+	document.getElementById('build_random_button').disabled = val;
+	document.getElementById('load_sample_button').disabled = val;
+	document.getElementById('add_point_man_button').disabled = val;
+	document.getElementById('clear_points_button').disabled = val;
+}
+
+function unblockButtons() {
+	setDisabledValues(false);
+}
+
+function blockButtons() {
+	setDisabledValues(true);
+}
+
 function showState() {
 	if (current_state_id == states.length) {
 		clearTimeout(timeout_id);
@@ -170,8 +187,7 @@ function showState() {
 		if (states.length > 0) {
 			current_state = states[current_state_id - 1];
 		}
-		document.getElementById('v_type').disabled = false;
-		document.getElementById('visualize_button').disabled = false;
+		unblockButtons();
 		redraw(last_beta, last_alpha);
 		return;
 	}
@@ -212,8 +228,7 @@ function visualizeOnClick() {
 		return;
 	}
 	prepareAnimation();
-	document.getElementById('v_type').disabled = true;
-	document.getElementById('visualize_button').disabled = true;
+	blockButtons();
 	visualize();
 }
 

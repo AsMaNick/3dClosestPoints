@@ -54,6 +54,8 @@ function inRange(l, r, x) {
 }
 
 function updateManualTest() {
+	current_state = null;
+	clearBestPair();
 	var s = '';
 	s += points.length + '\n';
 	for (var point of points) {

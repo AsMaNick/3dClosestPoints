@@ -107,7 +107,7 @@ function posPointY(d){
 }
 
 function getFillPoint(d) {
-	if (!visualization) {
+	if (!visualization || !current_state) {
 		return 'blue';
 	}
 	if (d.z < current_state.l) {
@@ -123,8 +123,10 @@ function getFillPoint(d) {
 
 function getR(d) {
 	// console.log(d.id, current_state.current_point_id);
-	if (visualization && d.id == current_state.current_point_id) {
-		return 6;
+	if (visualization && current_state) {
+		if (d.id == current_state.current_point_id) {
+			return 6;
+		}
 	}
 	return 3;
 }
@@ -259,7 +261,7 @@ function redraw(beta, alpha) {
 	drawGrid(data);
 	drawPoints(point3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(points));
 	//drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(lines));
-	if (visualization) {
+	if (visualization && current_state) {
 		var planes = [];
 		if (current_state.l != INF) {
 			planes.push([{'x': -1, 'y': -1, 'z': current_state.l},
@@ -295,6 +297,11 @@ function redraw(beta, alpha) {
 	}
 	//d3.selectAll('._3d').sort(d3._3d().rotateY(beta + startAngleY).rotateX(alpha - startAngleX).sort);
 	//d3.selectAll('._3d').sort(d3._3d().sort);
+}
+
+function clearBestPair() {
+	drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)([]), 'curMin', '');
+	drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)([]), 'newMin', '');
 }
 
 function dragged(){

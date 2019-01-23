@@ -77,7 +77,6 @@ function clearPointsOnclick() {
 function buildManualTestOnclick() {
 	clearErrors();
 	var res = parseTest(document.getElementById('test_area').value);
-	console.log(res);
 	if (res[0] == '') {
 		points = res[1];
 		updateManualTest();
@@ -89,7 +88,6 @@ function buildManualTestOnclick() {
 }
 
 function visualizationTypeOnChange() {
-	console.log(getVisualizationType() == 'Auto');
 	document.getElementById('forward_button').disabled = (getVisualizationType() == 'Auto');
 	document.getElementById('backward_button').disabled = (getVisualizationType() == 'Auto');
 }

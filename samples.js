@@ -1,4 +1,5 @@
 function loadSampleOnclick() {
+	clearErrors();
 	var sample = document.getElementById('select_sample').value;
 	var res;
 	if (sample == 'Sample 1') {
