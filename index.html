@@ -1,14 +1,94 @@
 <!DOCTYPE html>
 <head>
 	<meta charset="utf-8">
-	<script src="https://d3js.org/d3.v4.min.js"></script>
-	<script src="https://unpkg.com/d3-3d/build/d3-3d.js"></script>
+	<script src="third-party/d3.v4.min.js"></script>
+	<script src="third-party/d3-3d.js"></script>
+	<script src="third-party/jquery-latest.js"></script>
+	<link rel='stylesheet' href="styles.css">
 </head>
 
-<body onload="init()">
-	<svg width="960" height="600"></svg>
-	<button onclick="visualizeOnClick()"> Visualize </button>
+<body onload="init(); updateManualTest();">
+	<div class='canvas'>
+		<button style='position: absolute; top: 190px; left: 3px; width: 30px; height: 30px;' onclick="scaleUpOnclick()"> + </button>
+		<button style='position: absolute; top: 230px; left: 3px; width: 30px; height: 30px;' onclick="scaleDownOnclick()"> - </button>
+		<svg width="860" height="500"></svg>
+	</div>
+		
+		<aside style='float: right; vertical-align: top; padding: 10px; border: solid 1px black;'>
+			<div style="text-alight: top;">
+				<legend>Map building: </legend>
+				<br>
+				
+				<input type='number' name="n_points" style='height: 18px' placeholder="n" min="1" max="100"> 
+				<input type='number' name="maxX" style='height: 18px' placeholder="mxX" min="1" max="300" value="300"> 
+				<input type='number' name="maxY" style='height: 18px' placeholder="mxY" min="1" max="300" value="300"> 
+				<input type='number' name="maxZ" style='height: 18px' placeholder="mxZ" min="1" max="300" value="300"> <br>
+				<button onclick='buildRandomPointsOnclick()' style="margin-top: 8px"> Build random </button> <br>
+				<span class="error" id="sp1"></span> <br>
+				
+				<select id="select_sample" size="1" style="height: 23px">
+					<option>Sample 1</option>
+					<option>Sample 2</option>
+				</select>
+				<button style='width:162px; font-size: 12px;' onclick='loadSampleOnclick()'> Load sample </button> <br>
+				<span class="error" id="sp2"></span> <br>
+				
+				<button style='font-size: 12px;' onclick='enable_adding_city_onclick()' name='add_city_button'> Add point manually </button> <br>
+				<span class="error" id="sp3"></span> <br>
+				
+				<button style='font-size: 12px;' onclick='clearPointsOnclick()'> Clear all points </button> <br>
+				<span class="error" id="sp4"></span> <br>
+			</div>
+			
+			<div>
+				<legend>Additionally: </legend>
+				<br>
+				
+				<span style="vertical-align:top; font-size:17px; display:inline-block; margin:2px 10px 0 0;">Speed: </span>
+				<input name="speed" style="width:160px;" type="range" min="1" max="1000" value="500">
+				<br>
+				<br>
+				
+				<span style="vertical-align:top; font-size:17px; display:inline-block; margin:2px 10px 0 0;"> Visualization: </span>
+				<select name="select_v" size="1">
+					<option> Auto </option>
+					<option> Manual </option>
+				</select>
+				<br>
+				<br>
+				
+				<input type="checkbox" style="width: 15px" onchange="enumerate_vertices_onchange()" name="enumerate_vertices_checkbox"> Auto rotation </input>
+				<br>
+				<br>
+				
+				<button name="backward" style='width:81px' onclick='undo_onclick()' onload="changed_visualisation()"> Backward </button>
+				<button name="forward" style='width:81px' onclick='redo_onclick()' onload="changed_visualisation()"> Forward </button> 
+				<button name="forward" style='width:82px' onclick='end_visualization()' onload="changed_visualisation()"> End </button> <br>
+				<br>
+				<button name="forward" onclick='visualizeOnClick()'> Visualize </button> <br>
+				<span class="error" id="sp5"></span>
+			</div>
+		</aside>
+		
+		<br>
+		<br>
+		<legend> Operations list: </legend>
+		<div class='log'>
+		</div>
+		<legend> Manual test: </legend>
+		<div class='test' style="text-align: center">
+			<textarea cols=1000 rows=20 id="test_area" style="min-width: 790px; max-width:790px; max-height: 400px"></textarea> 
+			<br>
+
+			<button name="go_test" onclick='buildManualTestOnclick()' style="width: 82px"> Build </button> 
+			<br>
+			<span class="error" id="sp6"></span>
+		</div>
 </body>
 
+<script type="text/javascript" src="utils.js"> </script>
 <script type="text/javascript" src="graphics.js"> </script>
 <script type="text/javascript" src="visualisator.js"> </script>
+<script type="text/javascript" src="interface.js"> </script>
+<script type="text/javascript" src="parse_test.js"> </script>
+<script type="text/javascript" src="samples.js"> </script>

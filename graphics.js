@@ -1,9 +1,9 @@
-var origin = [480, 300], j = 10, scale = 2, lines = [], yLine = [], xGrid = [], yGrid = [], zGrid = [], beta = 0, alpha = 0, key = function(d){ return d.id; };
-var svg = d3.select('svg').call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g').attr('transform', 'translate(0, 100)');
+var origin = [480, 300], j = 10, lines = [], yLine = [], xGrid = [], yGrid = [], zGrid = [], beta = 0, alpha = 0, key = function(d){ return d.id; };
+var svg = d3.select('svg').call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g').attr('transform', 'translate(-30, 15)');
 var color  = d3.scaleOrdinal(d3.schemeCategory20);
 var mx, my, mouseX, mouseY;
-var mxX = 200, mxY = 200, mxZ = 200;
-var PIXELS_BY_CELL = 20;
+var mxX = 300, mxY = 300, mxZ = 300;
+var PIXELS_BY_CELL = 30;
 var N = parseInt(mxX / PIXELS_BY_CELL);
 var M = parseInt(mxY / PIXELS_BY_CELL);
 var K = parseInt(mxZ / PIXELS_BY_CELL);
@@ -14,41 +14,45 @@ var startAngleX = 0.1 * Math.PI;
 var last_beta = 0;
 var last_alpha = 0;
 
-var grid3d = d3._3d()
-	.shape('GRID', 11)
-	.origin(origin)
-	.rotateY( startAngleY)
-	.rotateX(-startAngleX)
-	.scale(scale);
+var grid3d, plane3d, point3d, line3d;
 
-var plane3d = d3._3d()
-	.shape('PLANE')
-	.x(function(d){ return d.x; })
-	.y(function(d){ return d.y; })
-	.z(function(d){ return d.z; })
-	.origin(origin)
-	.rotateY( startAngleY)
-	.rotateX(-startAngleX)
-	.scale(scale);
-	
-var point3d = d3._3d()
-	.x(function(d){ return d.x; })
-	.y(function(d){ return d.y; })
-	.z(function(d){ return d.z; })
-	.origin(origin)
-	.rotateY( startAngleY)
-	.rotateX(-startAngleX)
-	.scale(scale);
+function initPrimitives() {
+	grid3d = d3._3d()
+		.shape('GRID', 11)
+		.origin(origin)
+		.rotateY( startAngleY)
+		.rotateX(-startAngleX)
+		.scale(getScale());
 
-var line3d = d3._3d()
-	.shape('LINE')
-	.x(function(d){ return d.x; })
-	.y(function(d){ return d.y; })
-	.z(function(d){ return d.z; })
-	.origin(origin)
-	.rotateY( startAngleY)
-	.rotateX(-startAngleX)
-	.scale(scale);
+	plane3d = d3._3d()
+		.shape('PLANE')
+		.x(function(d){ return d.x; })
+		.y(function(d){ return d.y; })
+		.z(function(d){ return d.z; })
+		.origin(origin)
+		.rotateY( startAngleY)
+		.rotateX(-startAngleX)
+		.scale(getScale());
+		
+	point3d = d3._3d()
+		.x(function(d){ return d.x; })
+		.y(function(d){ return d.y; })
+		.z(function(d){ return d.z; })
+		.origin(origin)
+		.rotateY( startAngleY)
+		.rotateX(-startAngleX)
+		.scale(getScale());
+
+	line3d = d3._3d()
+		.shape('LINE')
+		.x(function(d){ return d.x; })
+		.y(function(d){ return d.y; })
+		.z(function(d){ return d.z; })
+		.origin(origin)
+		.rotateY( startAngleY)
+		.rotateX(-startAngleX)
+		.scale(getScale());
+}
 	
 function drawGrid(data) {
 	var xGrid = svg.selectAll('path.gridX').data(data[0]);
@@ -298,6 +302,7 @@ function dragEnd(){
 }
 
 function init() {
+	initPrimitives();
 	initGrid();
 	initPoints();
 	//d3.selectAll('._3d').sort(d3._3d().rotateY(last_beta + startAngleY).rotateX(last_alpha - startAngleX).sort);

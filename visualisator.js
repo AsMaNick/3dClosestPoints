@@ -9,10 +9,9 @@ var visualization = false;
 
 for (var p = 0; p < 21; ++p) {
 	points.push({
-		x: d3.randomUniform(-5, -mxX + 5)(),
-		//x: d3.randomUniform(-5, -5)(),
-		y: d3.randomUniform(-5, -mxY + 5)(),
-		z: d3.randomUniform(-5, -mxZ + 5)(),
+		x: randInt(-1, -MAX_X),
+		y: randInt(-1, -MAX_Y),
+		z: randInt(-1, -MAX_Z),
 		id: p
 	});
 }
@@ -165,7 +164,7 @@ function rec(l, r) {
 
 function showState() {
 	if (current_state_id == states.length) {
-		clearInterval(interval_id);
+		clearTimeout(interval_id);
 		//visualization = false;
 		return;
 	}
@@ -173,14 +172,18 @@ function showState() {
 	console.log(current_state);
 	redraw(last_beta, last_alpha);
 	current_state_id += 1;
+	console.log(getSpeed());
+	interval_id = setTimeout(function() {
+		showState();
+	}, getSpeed());
 }
 
 function visualize() {
 	visualization = true;
 	current_state_id = 0;
-	interval_id = setInterval(function() {
+	interval_id = setTimeout(function() {
 		showState();
-	}, 1000);
+	}, 100);
 }
 
 function prepareAnimation() {
@@ -200,7 +203,6 @@ function prepareAnimation() {
 
 function visualizeOnClick() {
 	if (visualization) {
-		clearInterval(interval_id);
 		return;
 	}
 	prepareAnimation();

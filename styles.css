@@ -1,0 +1,69 @@
+legend {
+	font-weight: bold;
+}
+
+body {	
+	padding-left:10px;
+}
+
+input {
+	width: 50px;
+	font-size: 19.5px;
+}
+
+button {
+	font-size: 13px;
+	vertical-align: top;
+	padding-top:3px;
+	padding-bottom:5px;
+	width: 250px;
+	height: 23px;
+}
+			
+.canvas {
+	overflow: scroll; /* Добавляем полосы прокрутки */
+	width: 800px; /* Ширина блока */
+	height: 400px; /* Высота блока */
+	padding: 5px; /* Поля вокруг текста */
+	border: solid 1px black; /* Параметры рамки */
+
+	display:inline-block;
+	vertical-align: top;
+	padding: 10px;
+}
+
+.log {
+	overflow: scroll; /* Добавляем полосы прокрутки */
+	width: 800px; /* Ширина блока */
+	height: 160px; /* Высота блока */
+	padding: 5px; /* Поля вокруг текста */
+	border: solid 1px black; /* Параметры рамки */
+	margin-top: 5px;
+	padding: 10px;
+}
+
+.test {
+	width: 800px; /* Ширина блока */
+	padding: 5px; /* Поля вокруг текста */
+	border: solid 1px black; /* Параметры рамки */
+	margin-top: 5px;
+	padding: 10px;
+}
+
+div.right_block {
+	display:inline-block;
+	vertical-align: top;
+	padding: 10px;
+	border: solid 1px black; /* Параметры рамки */
+}
+
+.error {
+	color: red;
+	opacity: 1;
+	font-size: 15px;
+}
+
+input {
+	font-size: 15px;
+	width: 55px;
+}
