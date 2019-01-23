@@ -75,3 +75,7 @@ function getVisualizationType() {
 function autoRotation() {
 	return document.getElementById('auto_rotation').checked;
 }
+
+function addPointsManuallyMode() {
+	return document.getElementById('add_point_man_button').innerHTML == 'Done';
+}

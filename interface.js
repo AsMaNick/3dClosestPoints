@@ -12,8 +12,6 @@ function rescaleSvg() {
 	d3.selectAll('g').attr('transform', transforms[current_scale]);
 }
 
-rescaleSvg();
-
 function scaleUpOnclick() {
 	if (current_scale + 1 < scales.length) {
 		current_scale += 1;
@@ -99,4 +97,33 @@ function endVisualization() {
 	setTimeout(function() {
 		showState();
 	}, 50);
+}
+
+function addPointsManuallyOnclick() {
+	var v1 = 'Add points manually';
+	var v2 = 'Done';
+	if (document.getElementById('add_point_man_button').innerHTML == v1) {
+		document.getElementById('add_point_man_button').innerHTML = v2;
+	} else {
+		document.getElementById('add_point_man_button').innerHTML = v1;
+	}
+}
+
+function addNewPointOnclick() {
+	if (visualization || !addPointsManuallyMode()) {
+		return;
+	}
+	console.log(event);
+	return;
+	var x = event.x;
+	var y = event.y;
+	var point = {
+		'x': 0,
+		'y': y - 270,
+		'z': x - 500,
+		'id': points.length
+	};
+	points.push(point);
+	updateManualTest();
+	redraw(last_beta, last_alpha);
 }

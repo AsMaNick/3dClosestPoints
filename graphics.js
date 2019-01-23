@@ -1,5 +1,5 @@
 var origin = [480, 300], j = 10, lines = [], yLine = [], xGrid = [], yGrid = [], zGrid = [], beta = 0, alpha = 0, key = function(d){ return d.id; };
-var svg = d3.select('svg').call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g').attr('transform', 'translate(-30, 15)');
+var svg = d3.select('svg').call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g').attr('transform', 'translate(-60, -50)').on('click', addNewPointOnclick);
 var color  = d3.scaleOrdinal(d3.schemeCategory20);
 var mx, my, mouseX, mouseY;
 var mxX = 300, mxY = 300, mxZ = 300;

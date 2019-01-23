@@ -11,7 +11,7 @@
 	<div class='canvas'>
 		<button style='position: absolute; top: 190px; left: 3px; width: 30px; height: 30px;' onclick="scaleUpOnclick()"> + </button>
 		<button style='position: absolute; top: 230px; left: 3px; width: 30px; height: 30px;' onclick="scaleDownOnclick()"> - </button>
-		<svg width="860" height="500"></svg>
+		<svg width="780" height="370"></svg>
 	</div>
 		
 		<aside style='float: right; vertical-align: top; padding: 10px; border: solid 1px black;'>
@@ -33,7 +33,7 @@
 				<button id='load_sample_button' style='width:165px; font-size: 12px;' onclick='loadSampleOnclick()'> Load sample </button> <br>
 				<span class="error" id="sp2"></span> <br>
 				
-				<button id='add_point_man_button' style='font-size: 12px;' onclick='enable_adding_city_onclick()' name='add_city_button'> Add point manually </button> <br>
+				<button id='add_point_man_button' style='font-size: 12px;' onclick='addPointsManuallyOnclick()' name='add_city_button'>Add points manually</button> <br>
 				<span class="error" id="sp3"></span> <br>
 				
 				<button id='clear_points_button' style='font-size: 12px;' onclick='clearPointsOnclick()'> Clear all points </button> <br>
@@ -87,8 +87,8 @@
 </body>
 
 <script type="text/javascript" src="utils.js"> </script>
+<script type="text/javascript" src="interface.js"> </script>
 <script type="text/javascript" src="graphics.js"> </script>
 <script type="text/javascript" src="visualizer.js"> </script>
-<script type="text/javascript" src="interface.js"> </script>
 <script type="text/javascript" src="parse_test.js"> </script>
 <script type="text/javascript" src="samples.js"> </script>
