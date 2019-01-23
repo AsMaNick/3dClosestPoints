@@ -69,3 +69,7 @@ function randInt(l, r) {
 function getVisualizationType() {
 	return document.getElementById('v_type').value;
 }
+
+function autoRotation() {
+	return document.getElementById('auto_rotation').checked;
+}

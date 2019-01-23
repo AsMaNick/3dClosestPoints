@@ -239,3 +239,31 @@ function redoOnclick() {
 	}
 	showState();
 }
+
+var dirRotation;
+var rotation_interval;
+
+function makeRotation() {
+	mouseX = mouseX || 0;
+	mouseY = mouseY || 0;
+	addMouseX += dirRotation;
+	if (Math.abs(addMouseX) > 60) {
+		dirRotation *= -1;
+	}
+	beta = (mouseX + addMouseX) * Math.PI / 230 ;
+	alpha = (mouseY) * Math.PI / 230  * (-1);
+	redraw(beta, alpha);
+}
+
+function autoRotationOchange() {
+	if (autoRotation()) {
+		mouseX = 0;
+		addMouseX = 0;
+		dirRotation = -0.25;
+		rotation_interval = setInterval(function() {
+			makeRotation() 
+		}, 50);
+	} else {
+		clearInterval(rotation_interval);
+	}
+}

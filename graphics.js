@@ -240,7 +240,10 @@ function initPoints() {
 	drawPoints(point3d(points));
 }
 
-function dragStart(){
+function dragStart() {
+	if (autoRotation()) {
+		return;
+	}
 	mx = d3.event.x;
 	my = d3.event.y;
 }
@@ -295,6 +298,9 @@ function redraw(beta, alpha) {
 }
 
 function dragged(){
+	if (autoRotation()) {
+		return;
+	}
 	mouseX = mouseX || 0;
 	mouseY = mouseY || 0;
 	beta = (d3.event.x - mx + mouseX) * Math.PI / 230 ;
@@ -303,6 +309,9 @@ function dragged(){
 }
 
 function dragEnd(){
+	if (autoRotation()) {
+		return;
+	}
 	mouseX = d3.event.x - mx + mouseX;
 	mouseY = d3.event.y - my + mouseY;
 }
