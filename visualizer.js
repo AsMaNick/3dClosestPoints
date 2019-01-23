@@ -4,6 +4,7 @@ var states = [];
 var current_min = [];
 var current_state_id = 0;
 var current_state_id;
+var current_state;
 var timeout_id  = 0;
 var visualization = false;
 

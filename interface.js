@@ -1,10 +1,24 @@
-var scales = [0.25, 0.35, 0.5, 0.75, 0.9, 1, 1.2, 1.5, 2, 2.8, 4];
-var current_scale = scales.indexOf(1);
+var scales = [0.25, 0.35, 0.5, 0.75, 0.9, 1, 1.2, 1.5, 2, 2.8];
+var widths = [780, 780, 780, 780, 780, 860, 1000, 1250, 1600, 2000];
+var heights = [370, 370, 370, 370, 500, 550, 650, 900, 1250, 1600];
+var transforms = ['translate(-60, -75)', 'translate(-60, -75)', 'translate(-60, -75)', 'translate(-60, -50)', 
+				  'translate(-60, -25)', 'translate(-50, 0)', 'translate(10, 70)', 'translate(120, 160)', 
+				  'translate(250, 320)', 'translate(530, 530)'];
+var current_scale = scales.indexOf(0.75);
+
+function rescaleSvg() {
+	d3.selectAll('svg').attr('width', widths[current_scale]);
+	d3.selectAll('svg').attr('height', heights[current_scale]);
+	d3.selectAll('g').attr('transform', transforms[current_scale]);
+}
+
+rescaleSvg();
 
 function scaleUpOnclick() {
 	if (current_scale + 1 < scales.length) {
 		current_scale += 1;
 		initPrimitives();
+		rescaleSvg();
 		redraw(last_beta, last_alpha);
 	}
 }
@@ -13,6 +27,7 @@ function scaleDownOnclick() {
 	if (current_scale > 0) {
 		current_scale -= 1;
 		initPrimitives();
+		rescaleSvg();
 		redraw(last_beta, last_alpha);
 	}
 }

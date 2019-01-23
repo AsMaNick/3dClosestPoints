@@ -285,7 +285,7 @@ function redraw(beta, alpha) {
 			drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)([]), 'newMin', '');
 		}
 		//d3.selectAll('._3d').sort(cmpByZ2);
-	} else {
+	} else if (current_state) {
 		if (current_state.current_min.length == 2) {
 			drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)([current_state.current_min]), 'curMin', 'black');
 		}
