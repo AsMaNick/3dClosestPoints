@@ -91,3 +91,12 @@ function visualizationTypeOnChange() {
 	document.getElementById('forward_button').disabled = (getVisualizationType() == 'Auto');
 	document.getElementById('backward_button').disabled = (getVisualizationType() == 'Auto');
 }
+
+function endVisualization() {
+	current_state_id = states.length - 1;
+	clearTimeout(timeout_id);
+	showState();
+	setTimeout(function() {
+		showState();
+	}, 50);
+}

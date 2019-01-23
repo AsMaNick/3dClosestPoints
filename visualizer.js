@@ -174,10 +174,12 @@ function setDisabledValues(val) {
 
 function unblockButtons() {
 	setDisabledValues(false);
+	document.getElementById('end_button').disabled = true;
 }
 
 function blockButtons() {
 	setDisabledValues(true);
+	document.getElementById('end_button').disabled = false;
 }
 
 function showState() {
