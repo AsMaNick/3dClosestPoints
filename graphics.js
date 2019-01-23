@@ -117,6 +117,14 @@ function getFillPoint(d) {
 	}
 }
 
+function getR(d) {
+	// console.log(d.id, current_state.current_point_id);
+	if (visualization && d.id == current_state.current_point_id) {
+		return 6;
+	}
+	return 3;
+}
+
 function drawPoints(points_data) {
 	var points = svg.selectAll('circle').data(points_data);
 
@@ -128,7 +136,7 @@ function drawPoints(points_data) {
 		.attr('cx', posPointX)
 		.attr('cy', posPointY)
 		.merge(points)
-		.attr('r', 3)
+		.attr('r', getR)
 		.attr('stroke', function(d){ return 'gray' })
 		.attr('fill', getFillPoint)
 		.attr('opacity', 1)
@@ -173,6 +181,22 @@ function drawPlanes(data){
 	planes.exit().remove();
 }
 
+function drawCubes(data){
+	var planes = svg.selectAll('path.Cube').data(data);
+	planes
+		.enter()
+		.append('path')
+		.attr('class', '_3d Cube')
+		.merge(planes)
+		.attr('opacity', '0.2')
+		.attr('fill', 'red')
+		.attr('stroke', d3.color('black'))
+		.attr('stroke-width', 2)
+		.attr('d', grid3d.draw)
+
+	planes.exit().remove();
+}
+
 function posPointX(d) {
 	return d.projected.x;
 }
@@ -212,12 +236,6 @@ function initPoints() {
 	drawPoints(point3d(points));
 }
 
-function initLines() {
-	lines = [];
-	lines.push([{'x':-10,'y':-10,'z':-10},{'x':-111,'y':-111,'z':-111}]);
-	drawLines(line3d(lines));
-}
-
 function dragStart(){
 	mx = d3.event.x;
 	my = d3.event.y;
@@ -251,6 +269,7 @@ function redraw(beta, alpha) {
 						 {'x': -mxX, 'y': -1, 'z': current_state.X}]);
 		}
 		drawPlanes(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(planes));
+		drawCubes(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(current_state.cube));
 		if (current_state.current_min.length == 2) {
 			drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)([current_state.current_min]), 'curMin', 'black');
 		}
@@ -281,7 +300,6 @@ function dragEnd(){
 function init() {
 	initGrid();
 	initPoints();
-	//initLines();
 	//d3.selectAll('._3d').sort(d3._3d().rotateY(last_beta + startAngleY).rotateX(last_alpha - startAngleX).sort);
 	//d3.selectAll('._3d').sort(d3._3d().sort);
 }
