@@ -276,6 +276,8 @@ function redraw(beta, alpha) {
 		drawCubes(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(current_state.cube));
 		if (current_state.current_min.length == 2) {
 			drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)([current_state.current_min]), 'curMin', 'black');
+		} else {
+			drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)([]), 'curMin', '');
 		}
 		if (current_state.new_min.length == 2) {
 			drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)([current_state.new_min]), 'newMin', current_state.new_min_color);
@@ -283,6 +285,10 @@ function redraw(beta, alpha) {
 			drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)([]), 'newMin', '');
 		}
 		//d3.selectAll('._3d').sort(cmpByZ2);
+	} else {
+		if (current_state.current_min.length == 2) {
+			drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)([current_state.current_min]), 'curMin', 'black');
+		}
 	}
 	//d3.selectAll('._3d').sort(d3._3d().rotateY(beta + startAngleY).rotateX(alpha - startAngleX).sort);
 	//d3.selectAll('._3d').sort(d3._3d().sort);

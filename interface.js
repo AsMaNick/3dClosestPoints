@@ -72,3 +72,9 @@ function buildManualTestOnclick() {
 		showError('sp6', res[0]);
 	}
 }
+
+function visualizationTypeOnChange() {
+	console.log(getVisualizationType() == 'Auto');
+	document.getElementById('forward_button').disabled = (getVisualizationType() == 'Auto');
+	document.getElementById('backward_button').disabled = (getVisualizationType() == 'Auto');
+}

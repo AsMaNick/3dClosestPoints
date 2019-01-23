@@ -65,3 +65,7 @@ function updateManualTest() {
 function randInt(l, r) {
 	return parseInt(d3.randomUniform(l, r)());
 }
+
+function getVisualizationType() {
+	return document.getElementById('v_type').value;
+}

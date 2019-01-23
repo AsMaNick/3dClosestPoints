@@ -4,7 +4,7 @@ var states = [];
 var current_min = [];
 var current_state_id = 0;
 var current_state_id;
-var interval_id  = 0;
+var timeout_id  = 0;
 var visualization = false;
 
 for (var p = 0; p < 21; ++p) {
@@ -164,24 +164,30 @@ function rec(l, r) {
 
 function showState() {
 	if (current_state_id == states.length) {
-		clearTimeout(interval_id);
-		//visualization = false;
+		clearTimeout(timeout_id);
+		visualization = false;
+		if (states.length > 0) {
+			current_state = states[current_state_id - 1];
+		}
+		document.getElementById('v_type').disabled = false;
+		document.getElementById('visualize_button').disabled = false;
+		redraw(last_beta, last_alpha);
 		return;
 	}
 	current_state = states[current_state_id];
-	console.log(current_state);
 	redraw(last_beta, last_alpha);
 	current_state_id += 1;
-	console.log(getSpeed());
-	interval_id = setTimeout(function() {
-		showState();
-	}, getSpeed());
+	if (getVisualizationType() == 'Auto') {
+		timeout_id = setTimeout(function() {
+			showState();
+		}, getSpeed());
+	}
 }
 
 function visualize() {
 	visualization = true;
 	current_state_id = 0;
-	interval_id = setTimeout(function() {
+	timeout_id = setTimeout(function() {
 		showState();
 	}, 100);
 }
@@ -198,7 +204,6 @@ function prepareAnimation() {
 						  [],
 						  [],
 						  -1));
-	visualize();
 }
 
 function visualizeOnClick() {
@@ -206,4 +211,30 @@ function visualizeOnClick() {
 		return;
 	}
 	prepareAnimation();
+	document.getElementById('v_type').disabled = true;
+	document.getElementById('visualize_button').disabled = true;
+	visualize();
+}
+
+function undoOnclick() {
+	clearErrors();
+	if (!visualization) {
+		showError('sp5', 'Visualization is not started');
+		return;
+	}
+	if (current_state_id > 1) {
+		current_state_id -= 2;
+		showState();
+	} else {
+		showError('sp5', 'You are at the first step');
+	}
+}
+
+function redoOnclick() {
+	clearErrors();
+	if (!visualization) {
+		showError('sp5', 'Visualization is not started');
+		return;
+	}
+	showState();
 }

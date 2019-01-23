@@ -30,7 +30,7 @@
 					<option>Sample 1</option>
 					<option>Sample 2</option>
 				</select>
-				<button style='width:162px; font-size: 12px;' onclick='loadSampleOnclick()'> Load sample </button> <br>
+				<button style='width:165px; font-size: 12px;' onclick='loadSampleOnclick()'> Load sample </button> <br>
 				<span class="error" id="sp2"></span> <br>
 				
 				<button style='font-size: 12px;' onclick='enable_adding_city_onclick()' name='add_city_button'> Add point manually </button> <br>
@@ -50,7 +50,7 @@
 				<br>
 				
 				<span style="vertical-align:top; font-size:17px; display:inline-block; margin:2px 10px 0 0;"> Visualization: </span>
-				<select name="select_v" size="1">
+				<select id="v_type" size="1" onchange="visualizationTypeOnChange()">
 					<option> Auto </option>
 					<option> Manual </option>
 				</select>
@@ -61,11 +61,11 @@
 				<br>
 				<br>
 				
-				<button name="backward" style='width:81px' onclick='undo_onclick()' onload="changed_visualisation()"> Backward </button>
-				<button name="forward" style='width:81px' onclick='redo_onclick()' onload="changed_visualisation()"> Forward </button> 
-				<button name="forward" style='width:82px' onclick='end_visualization()' onload="changed_visualisation()"> End </button> <br>
+				<button id="backward_button" style='width:80px' onclick='undoOnclick()' onload="changed_visualisation()" disabled> Backward </button>
+				<button id="forward_button" style='width:81px' onclick='redoOnclick()' onload="changed_visualisation()" disabled> Forward </button> 
+				<button id="end_button" style='width:81px' onclick='endVisualization()' onload="changed_visualisation()"> End </button> <br>
 				<br>
-				<button name="forward" onclick='visualizeOnClick()'> Visualize </button> <br>
+				<button id="visualize_button" onclick='visualizeOnClick()'> Visualize </button> <br>
 				<span class="error" id="sp5"></span>
 			</div>
 		</aside>
@@ -88,7 +88,7 @@
 
 <script type="text/javascript" src="utils.js"> </script>
 <script type="text/javascript" src="graphics.js"> </script>
-<script type="text/javascript" src="visualisator.js"> </script>
+<script type="text/javascript" src="visualizer.js"> </script>
 <script type="text/javascript" src="interface.js"> </script>
 <script type="text/javascript" src="parse_test.js"> </script>
 <script type="text/javascript" src="samples.js"> </script>
