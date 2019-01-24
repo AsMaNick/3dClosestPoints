@@ -194,6 +194,7 @@ function setDisabledValues(val) {
 	document.getElementById('load_sample_button').disabled = val;
 	document.getElementById('add_point_man_button').disabled = val;
 	document.getElementById('clear_points_button').disabled = val;
+	document.getElementById('build_button').disabled = val;
 }
 
 function unblockButtons() {
