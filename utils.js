@@ -74,3 +74,7 @@ function autoRotation() {
 function addPointsManuallyMode() {
 	return document.getElementById('add_point_man_button').innerHTML == 'Done';
 }
+
+function getDistance2D(x1, y1, x2, y2) {
+	return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+}

@@ -1,15 +1,7 @@
-var scales = [0.25, 0.35, 0.5, 0.75, 0.9, 1, 1.2, 1.5, 2, 2.8];
-var widths = [780, 780, 780, 780, 780, 860, 1000, 1250, 1600, 2000];
-var heights = [370, 370, 370, 370, 500, 550, 650, 900, 1250, 1600];
-var transforms = ['translate(-60, -75)', 'translate(-60, -75)', 'translate(-60, -75)', 'translate(-60, -50)', 
-				  'translate(-60, -25)', 'translate(-50, 0)', 'translate(10, 70)', 'translate(120, 160)', 
-				  'translate(250, 320)', 'translate(530, 530)'];
-var current_scale = scales.indexOf(0.75);
-
 function rescaleSvg() {
 	d3.selectAll('svg').attr('width', widths[current_scale]);
 	d3.selectAll('svg').attr('height', heights[current_scale]);
-	d3.selectAll('g').attr('transform', transforms[current_scale]);
+	d3.selectAll('g').attr('transform', 'translate({0}, {1})'.format(transformX[current_scale], transformY[current_scale]));
 }
 
 function scaleUpOnclick() {
@@ -113,17 +105,29 @@ function addNewPointOnclick() {
 	if (visualization || !addPointsManuallyMode()) {
 		return;
 	}
+	
 	console.log(event);
-	return;
-	var x = event.x;
-	var y = event.y;
-	var point = {
-		'x': 0,
-		'y': y - 270,
-		'z': x - 500,
-		'id': points.length
-	};
-	points.push(point);
+	
+	var best_distance = INF;
+	var best_point;
+	var iterations = 0;
+	while (best_distance > 2 && iterations < 111111) {
+		iterations += 1;
+		var point = {
+			'x': -randInt(1, MAX_X),
+			'y': -randInt(1, MAX_Y),
+			'z': -randInt(1, MAX_Z),
+			'id': points.length
+		};
+		var proj = point3d([point])[0];
+		var distance = getDistance2D(proj.projected.x, proj.projected.y, event.offsetX - transformX[current_scale], event.offsetY - transformY[current_scale]);
+		if (best_distance > distance) {
+			best_distance = distance;
+			best_point = point;
+		}
+	}
+	console.log(iterations, best_distance);
+	points.push(best_point);
 	updateManualTest();
 	redraw(last_beta, last_alpha);
 }

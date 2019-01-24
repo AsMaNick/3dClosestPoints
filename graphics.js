@@ -122,7 +122,6 @@ function getFillPoint(d) {
 }
 
 function getR(d) {
-	// console.log(d.id, current_state.current_point_id);
 	if (visualization && current_state) {
 		if (d.id == current_state.current_point_id) {
 			return 6;
@@ -305,7 +304,6 @@ function redraw(beta, alpha) {
 		grid3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(yGrid),
 		grid3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(zGrid),
 	];
-	console.log(alpha - startAngleX);
 	drawWalls(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(wallsBack), 'WallsBack', 'transparent');
 	drawGrid(data);
 	drawPoints(point3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(points));
