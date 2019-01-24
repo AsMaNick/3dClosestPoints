@@ -2,11 +2,10 @@ var origin = [480, 300], j = 10, lines = [], yLine = [], xGrid = [], yGrid = [],
 var svg = d3.select('svg').call(d3.drag().on('drag', dragged).on('start', dragStart).on('end', dragEnd)).append('g').attr('transform', 'translate(-60, -50)').on('click', addNewPointOnclick);
 var color  = d3.scaleOrdinal(d3.schemeCategory20);
 var mx, my, mouseX, mouseY;
-var mxX = 300, mxY = 300, mxZ = 300;
 var PIXELS_BY_CELL = 30;
-var N = parseInt(mxX / PIXELS_BY_CELL);
-var M = parseInt(mxY / PIXELS_BY_CELL);
-var K = parseInt(mxZ / PIXELS_BY_CELL);
+var N = parseInt(MAX_X / PIXELS_BY_CELL);
+var M = parseInt(MAX_Y / PIXELS_BY_CELL);
+var K = parseInt(MAX_Z / PIXELS_BY_CELL);
 var startAngleY = 0.7 * Math.PI;
 var startAngleX = 0.1 * Math.PI;
 //startAngleY = 0;
@@ -258,30 +257,30 @@ function initGrid() {
 	wallsBack = [];
 	wallsLeft = [];
 	wallsRight = [];
-	wallsUp.push([{'x': 0, 'y': -mxY, 'z': 0},
-				 {'x': 0, 'y': -mxY, 'z': thickness},
-				 {'x': -mxX, 'y': -mxY, 'z': thickness},
-				 {'x': -mxX, 'y': -mxY, 'z': 0}]);
-	wallsUp.push([{'x': 0, 'y': -mxY, 'z': -mxZ},
-				 {'x': 0, 'y': -mxY, 'z': thickness},
-				 {'x': thickness, 'y': -mxY, 'z': thickness},
-				 {'x': thickness, 'y': -mxY, 'z': -mxZ}]);
-	wallsRight.push([{'x': -mxX, 'y': 0, 'z': 0},
-				 {'x': -mxX, 'y': 0, 'z': thickness},
-				 {'x': -mxX, 'y': -mxY, 'z': thickness},
-				 {'x': -mxX, 'y': -mxY, 'z': 0}]);
-	wallsLeft.push([{'x': 0, 'y': 0, 'z': -mxZ},
-				 {'x': thickness, 'y': 0, 'z': -mxZ},
-				 {'x': thickness, 'y': -mxY, 'z': -mxZ},
-				 {'x': 0, 'y': -mxY, 'z': -mxZ}]);
-	wallsBack.push([{'x': -mxX, 'y': 0, 'z': thickness},
+	wallsUp.push([{'x': 0, 'y': -MAX_Y, 'z': 0},
+				 {'x': 0, 'y': -MAX_Y, 'z': thickness},
+				 {'x': -MAX_X, 'y': -MAX_Y, 'z': thickness},
+				 {'x': -MAX_X, 'y': -MAX_Y, 'z': 0}]);
+	wallsUp.push([{'x': 0, 'y': -MAX_Y, 'z': -MAX_Z},
+				 {'x': 0, 'y': -MAX_Y, 'z': thickness},
+				 {'x': thickness, 'y': -MAX_Y, 'z': thickness},
+				 {'x': thickness, 'y': -MAX_Y, 'z': -MAX_Z}]);
+	wallsRight.push([{'x': -MAX_X, 'y': 0, 'z': 0},
+				 {'x': -MAX_X, 'y': 0, 'z': thickness},
+				 {'x': -MAX_X, 'y': -MAX_Y, 'z': thickness},
+				 {'x': -MAX_X, 'y': -MAX_Y, 'z': 0}]);
+	wallsLeft.push([{'x': 0, 'y': 0, 'z': -MAX_Z},
+				 {'x': thickness, 'y': 0, 'z': -MAX_Z},
+				 {'x': thickness, 'y': -MAX_Y, 'z': -MAX_Z},
+				 {'x': 0, 'y': -MAX_Y, 'z': -MAX_Z}]);
+	wallsBack.push([{'x': -MAX_X, 'y': 0, 'z': thickness},
 				 {'x': thickness, 'y': 0, 'z': thickness},
-				 {'x': thickness, 'y': -mxY, 'z': thickness},
-				 {'x': -mxX, 'y': -mxY, 'z': thickness}]);
-	wallsBack.push([{'x': thickness, 'y': 0, 'z': -mxZ},
+				 {'x': thickness, 'y': -MAX_Y, 'z': thickness},
+				 {'x': -MAX_X, 'y': -MAX_Y, 'z': thickness}]);
+	wallsBack.push([{'x': thickness, 'y': 0, 'z': -MAX_Z},
 				 {'x': thickness, 'y': 0, 'z': thickness},
-				 {'x': thickness, 'y': -mxY, 'z': thickness},
-				 {'x': thickness, 'y': -mxY, 'z': -mxZ}]);
+				 {'x': thickness, 'y': -MAX_Y, 'z': thickness},
+				 {'x': thickness, 'y': -MAX_Y, 'z': -MAX_Z}]);
 	drawWalls(plane3d(wallsBack), 'WallsBack', 'transparent');
 	drawGrid(data);
 }
@@ -315,17 +314,17 @@ function redraw(beta, alpha) {
 		var planes = [];
 		if (current_state.l != INF) {
 			planes.push([{'x': -1, 'y': -1, 'z': current_state.l},
-						 {'x': -1, 'y': -mxY, 'z': current_state.l},
-						 {'x': -mxX, 'y': -mxY, 'z': current_state.l},
-						 {'x': -mxX, 'y': -1, 'z': current_state.l}]);
+						 {'x': -1, 'y': -MAX_Y, 'z': current_state.l},
+						 {'x': -MAX_X, 'y': -MAX_Y, 'z': current_state.l},
+						 {'x': -MAX_X, 'y': -1, 'z': current_state.l}]);
 			planes.push([{'x': -1, 'y': -1, 'z': current_state.r},
-						 {'x': -1, 'y': -mxY, 'z': current_state.r},
-						 {'x': -mxX, 'y': -mxY, 'z': current_state.r},
-						 {'x': -mxX, 'y': -1, 'z': current_state.r}]);
+						 {'x': -1, 'y': -MAX_Y, 'z': current_state.r},
+						 {'x': -MAX_X, 'y': -MAX_Y, 'z': current_state.r},
+						 {'x': -MAX_X, 'y': -1, 'z': current_state.r}]);
 			planes.push([{'x': -1, 'y': -1, 'z': current_state.X},
-						 {'x': -1, 'y': -mxY, 'z': current_state.X},
-						 {'x': -mxX, 'y': -mxY, 'z': current_state.X},
-						 {'x': -mxX, 'y': -1, 'z': current_state.X}]);
+						 {'x': -1, 'y': -MAX_Y, 'z': current_state.X},
+						 {'x': -MAX_X, 'y': -MAX_Y, 'z': current_state.X},
+						 {'x': -MAX_X, 'y': -1, 'z': current_state.X}]);
 		}
 		drawPlanes(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(planes));
 		drawCubes(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(current_state.cube), 'Cube', 'red');

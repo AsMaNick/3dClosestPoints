@@ -76,9 +76,9 @@ function getCube(lx, ly, lz, rx, ry, rz) {
 	ly = Math.min(ly, -1);
 	lz = Math.min(lz, -1);
 	
-	rx = Math.max(rx, -mxX + 1);
-	ry = Math.max(ry, -mxY + 1);
-	rz = Math.max(rz, -mxZ + 1);
+	rx = Math.max(rx, -MAX_X + 1);
+	ry = Math.max(ry, -MAX_Y + 1);
+	rz = Math.max(rz, -MAX_Z + 1);
 	
 	var planes = [];
 	planes.push([{'x': lx, 'y': ly, 'z': lz},
