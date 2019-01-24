@@ -78,3 +78,29 @@ function addPointsManuallyMode() {
 function getDistance2D(x1, y1, x2, y2) {
 	return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 }
+
+var cnt_logs = 0;
+
+function writeLog(message, current_state) {
+	var output = document.getElementsByClassName('log')[0];
+	++cnt_logs;
+	if (message == 'Finish visualization.' && current_state.current_min.length == 2) {
+		message += ' Best distance is {0} between points ({1}; {2}; {3}) and ({4}; {5}; {6}).'.format( 
+			getDistance(current_state.current_min).toFixed(2), 
+			-current_state.current_min[0].x, -current_state.current_min[0].y, -current_state.current_min[0].z, 
+			-current_state.current_min[1].x, -current_state.current_min[1].y, -current_state.current_min[1].z);
+	}
+	output.innerHTML = '<span> {0} </span> <br>'.format(message) + output.innerHTML;
+	if (getDistance(current_state.current_min) > getDistance(current_state.new_min)) {
+		s = 'New best distance is {0} between points ({1}; {2}; {3}) and ({4}; {5}; {6}).'.format( 
+			getDistance(current_state.new_min).toFixed(2), 
+			-current_state.new_min[0].x, -current_state.new_min[0].y, -current_state.new_min[0].z, 
+			-current_state.new_min[1].x, -current_state.new_min[1].y, -current_state.new_min[1].z);
+		output.innerHTML = '<span> {0} </span> <br>'.format(s) + output.innerHTML;
+		++cnt_logs;
+	}
+	while (cnt_logs > MAX_CNT_LOGS) {
+		output.innerHTML = output.innerHTML.slice(0, output.innerHTML.lastIndexOf("<span>") - output.innerHTML.length);
+		cnt_logs -= 1;
+	}
+}

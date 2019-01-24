@@ -31,7 +31,7 @@ function getDistance(c) {
 	return Math.sqrt(x * x + y * y + z * z);
 }
 
-function State(l, r, X, current_min, new_min, cube, current_point_id) {
+function State(l, r, X, current_min, new_min, cube, current_point_id, description) {
 	this.l = l;
 	this.r = r;
 	this.X = X;
@@ -46,6 +46,7 @@ function State(l, r, X, current_min, new_min, cube, current_point_id) {
 	}
 	this.cube = cube;
 	this.current_point_id = current_point_id;
+	this.description = description;
 }
 
 function cmpByZ(a, b) {
@@ -117,15 +118,18 @@ function rec(l, r) {
 	}
 	var mid = (l + r) >> 1;
 	var X = points[mid].z;
+	var lX = points[l].z;
+	var rX = points[r].z;
 	rec(l, mid);
 	rec(mid + 1, r);
-	states.push(new State(points[l].z, 
-						  points[r].z, 
+	states.push(new State(lX, 
+						  rX, 
 						  X,
 						  current_min,
 						  [],
 						  [],
-						  -1));
+						  -1,
+						  'Processing segment [{0}; {1}], X = {2}.'.format(l, r, -X)));
 	var d = getDistance(current_min);
 	for (var i = mid + 1; i <= r; ++i) {
 		if (points[i].z - d > X) {
@@ -138,26 +142,29 @@ function rec(l, r) {
 					
 				was_point = true;
 				var new_min = [points[i], points[j]];
-				states.push(new State(points[l].z, 
-									  points[r].z, 
+				states.push(new State(lX, 
+									  rX, 
 									  X,
 									  current_min,
 									  new_min,
 									  getCube(points[i].x + d, points[i].y + d, X + d, points[i].x - d, points[i].y - d, X - d),
-									  points[i].id));
+									  points[i].id,
+									  'Processing point #{0}. Trying segment ({1}; {2}; {3}) --- ({4}; {5}; {6}), distance = {7}.'.format(points[i].id, 
+									      -points[i].x, -points[i].y, -points[i].z, -points[j].x, -points[j].y, -points[j].z, getDistance(new_min).toFixed(2))));
 				if (getDistance(new_min) < getDistance(current_min)) {
 					current_min = new_min;
 				}
 			}
 		}
 		if (!was_point) {
-			states.push(new State(points[l].z, 
-								  points[r].z, 
+			states.push(new State(lX, 
+								  rX, 
 								  X,
 								  current_min,
 								  [],
 								  getCube(points[i].x + d, points[i].y + d, X + d, points[i].x - d, points[i].y - d, X - d),
-								  points[i].id));
+								  points[i].id,
+								  'Processing point #{0}.'.format(points[i].id)));
 		}
 	}
 	mergeSubarrays(l, mid, r);
@@ -182,7 +189,7 @@ function blockButtons() {
 	document.getElementById('end_button').disabled = false;
 }
 
-function showState() {
+function showState(undo) {
 	if (current_state_id == states.length) {
 		clearTimeout(timeout_id);
 		visualization = false;
@@ -194,11 +201,12 @@ function showState() {
 		return;
 	}
 	current_state = states[current_state_id];
+	writeLog((undo ? 'Cancel: ' : '') + current_state.description, current_state);
 	redraw(last_beta, last_alpha);
 	current_state_id += 1;
 	if (getVisualizationType() == 'Auto') {
 		timeout_id = setTimeout(function() {
-			showState();
+			showState(undo);
 		}, getSpeed());
 	}
 }
@@ -207,7 +215,7 @@ function visualize() {
 	visualization = true;
 	current_state_id = 0;
 	timeout_id = setTimeout(function() {
-		showState();
+		showState(false);
 	}, 100);
 }
 
@@ -222,7 +230,8 @@ function prepareAnimation() {
 						  current_min,
 						  [],
 						  [],
-						  -1));
+						  -1,
+						  'Finish visualization.'));
 }
 
 function visualizeOnClick() {
@@ -242,7 +251,7 @@ function undoOnclick() {
 	}
 	if (current_state_id > 1) {
 		current_state_id -= 2;
-		showState();
+		showState(true);
 	} else {
 		showError('sp5', 'You are at the first step');
 	}
@@ -254,7 +263,7 @@ function redoOnclick() {
 		showError('sp5', 'Visualization is not started');
 		return;
 	}
-	showState();
+	showState(false);
 }
 
 var dirRotation;
