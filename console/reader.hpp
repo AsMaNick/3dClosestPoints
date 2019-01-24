@@ -4,7 +4,7 @@ const bool READ_Z = true;
 struct point {
     int x, y, z, id;
 
-    point() {
+    point(): x(0), y(0), z(0), id(0) {
     }
 
     point(int x, int y, int z): x(x), y(y), z(z), id(-1) {
