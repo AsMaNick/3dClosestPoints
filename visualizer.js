@@ -31,10 +31,14 @@ function getDistance(c) {
 	return Math.sqrt(x * x + y * y + z * z);
 }
 
-function State(l, r, X, current_min, new_min, cube, current_point_id, description) {
+function State(l, r, mid, lX, rX, X, d, current_min, new_min, cube, current_point_id, description) {
 	this.l = l;
 	this.r = r;
+	this.mid = mid;
+	this.lX = lX;
+	this.rX = rX;
 	this.X = X;
+	this.d = d;
 	this.current_min = deepCopy(current_min);
 	this.new_min = deepCopy(new_min);
 	if (new_min.length == 2) {
@@ -122,29 +126,38 @@ function rec(l, r) {
 	var rX = points[r].z;
 	rec(l, mid);
 	rec(mid + 1, r);
-	states.push(new State(lX, 
-						  rX, 
+	var d = getDistance(current_min);
+	states.push(new State(l, 
+						  r, 
+						  mid,
+						  lX,
+						  rX,
 						  X,
+						  d,
 						  current_min,
 						  [],
 						  [],
 						  -1,
 						  'Processing segment [{0}; {1}], X = {2}.'.format(l, r, -X)));
-	var d = getDistance(current_min);
 	for (var i = mid + 1; i <= r; ++i) {
 		if (points[i].z - d > X) {
 			continue;
 		}
 		var was_point = false;
 		for (var j = l; j <= mid; ++j) {
-			if (points[j].z + d >= X && 
-				points[j].y + d >= points[i].y && points[j].y - d <= points[i].y) {
+			if (inRange(X - d, X, points[j].z) && 
+				inRange(points[i].y - d, points[i].y + d, points[j].y) && 
+				inRange(points[i].x - d, points[i].x + d, points[j].x)) {
 					
 				was_point = true;
 				var new_min = [points[i], points[j]];
-				states.push(new State(lX, 
-									  rX, 
+				states.push(new State(l, 
+									  r, 
+									  mid,
+									  lX,
+									  rX,
 									  X,
+									  d,
 									  current_min,
 									  new_min,
 									  getCube(points[i].x + d, points[i].y + d, X + d, points[i].x - d, points[i].y - d, X - d),
@@ -157,9 +170,13 @@ function rec(l, r) {
 			}
 		}
 		if (!was_point) {
-			states.push(new State(lX, 
-								  rX, 
+			states.push(new State(l, 
+								  r, 
+								  mid,
+								  lX,
+								  rX,
 								  X,
+								  d,
 								  current_min,
 								  [],
 								  getCube(points[i].x + d, points[i].y + d, X + d, points[i].x - d, points[i].y - d, X - d),
@@ -221,11 +238,18 @@ function visualize() {
 
 function prepareAnimation() {
 	points.sort(cmpByZ);
+	for (var i = 0; i < points.length; ++i) {
+		points[i].id = i;
+	}
 	states = [];
 	current_min = [];
 	rec(0, points.length - 1);
 	states.push(new State(INF, 
 						  INF, 
+						  INF,
+						  INF,
+						  INF,
+						  INF,
 						  INF,
 						  current_min,
 						  [],

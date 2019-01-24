@@ -110,11 +110,11 @@ function getFillPoint(d) {
 	if (!visualization || !current_state) {
 		return 'blue';
 	}
-	if (d.z < current_state.l) {
+	if (d.id < current_state.l) {
 		return 'black';
-	} else if (d.z <= current_state.X) {
+	} else if (d.id <= current_state.mid) {
 		return 'blue';
-	} else if (d.z <= current_state.r) {
+	} else if (d.id <= current_state.r) {
 		return 'yellow';
 	} else {
 		return 'black';
@@ -180,7 +180,7 @@ function drawPlanes(data){
 		.attr('opacity', '0.2')
 		.attr('fill', 'transparent')
 		.attr('stroke', d3.color('black'))
-		.attr('stroke-width', 5)
+		.attr('stroke-width', 3)
 		.attr('d', grid3d.draw)
 
 	planes.exit().remove();
@@ -311,14 +311,16 @@ function redraw(beta, alpha) {
 	if (visualization && current_state) {
 		var planes = [];
 		if (current_state.l != INF) {
-			planes.push([{'x': -1, 'y': -1, 'z': current_state.l},
-						 {'x': -1, 'y': -MAX_Y, 'z': current_state.l},
-						 {'x': -MAX_X, 'y': -MAX_Y, 'z': current_state.l},
-						 {'x': -MAX_X, 'y': -1, 'z': current_state.l}]);
-			planes.push([{'x': -1, 'y': -1, 'z': current_state.r},
-						 {'x': -1, 'y': -MAX_Y, 'z': current_state.r},
-						 {'x': -MAX_X, 'y': -MAX_Y, 'z': current_state.r},
-						 {'x': -MAX_X, 'y': -1, 'z': current_state.r}]);
+			var X1 = Math.max(-MAX_Z, current_state.X - current_state.d);
+			var X2 = Math.min(-1, current_state.X + current_state.d);
+			planes.push([{'x': -1, 'y': -1, 'z': X1},
+						 {'x': -1, 'y': -MAX_Y, 'z': X1},
+						 {'x': -MAX_X, 'y': -MAX_Y, 'z': X1},
+						 {'x': -MAX_X, 'y': -1, 'z': X1}]);
+			planes.push([{'x': -1, 'y': -1, 'z': X2},
+						 {'x': -1, 'y': -MAX_Y, 'z': X2},
+						 {'x': -MAX_X, 'y': -MAX_Y, 'z': X2},
+						 {'x': -MAX_X, 'y': -1, 'z': X2}]);
 			planes.push([{'x': -1, 'y': -1, 'z': current_state.X},
 						 {'x': -1, 'y': -MAX_Y, 'z': current_state.X},
 						 {'x': -MAX_X, 'y': -MAX_Y, 'z': current_state.X},
