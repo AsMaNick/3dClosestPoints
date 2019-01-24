@@ -177,10 +177,10 @@ function drawPlanes(data){
 		.append('path')
 		.attr('class', '_3d Plane')
 		.merge(planes)
-		.attr('opacity', '0.2')
+		.attr('opacity', 0.7)
 		.attr('fill', 'transparent')
-		.attr('stroke', d3.color('black'))
-		.attr('stroke-width', 3)
+		.attr('stroke', '#a99621')
+		.attr('stroke-width', 2)
 		.attr('d', grid3d.draw)
 
 	planes.exit().remove();
