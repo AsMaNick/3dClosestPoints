@@ -13,6 +13,7 @@ var startAngleX = 0.1 * Math.PI;
 //startAngleX = 0;
 var last_beta = 0;
 var last_alpha = 0;
+var walls = [], thickness = 50;
 
 var grid3d, plane3d, point3d, line3d;
 
@@ -187,17 +188,34 @@ function drawPlanes(data){
 	planes.exit().remove();
 }
 
-function drawCubes(data){
-	var planes = svg.selectAll('path.Cube').data(data);
+function drawCubes(data, name, fill_color){
+	var planes = svg.selectAll('path.' + name).data(data);
 	planes
 		.enter()
 		.append('path')
-		.attr('class', '_3d Cube')
+		.attr('class', '_3d ' + name)
 		.merge(planes)
 		.attr('opacity', '0.2')
-		.attr('fill', 'red')
+		.attr('fill', fill_color)
 		.attr('stroke', d3.color('black'))
 		.attr('stroke-width', 2)
+		.attr('d', grid3d.draw)
+
+	planes.exit().remove();
+}
+
+function drawWalls(data, name, fill_color){
+	var planes = svg.selectAll('path.' + name).data(data);
+	planes
+		.enter()
+		.append('path')
+		.attr('class', '_3d ' + name)
+		.merge(planes)
+		.attr('opacity', 1)
+		.attr('fill', fill_color)
+		.attr('fill-opacity', 0.9)
+		.attr('stroke', d3.color('black'))
+		.attr('stroke-width', 0.3)
 		.attr('d', grid3d.draw)
 
 	planes.exit().remove();
@@ -215,6 +233,7 @@ function initGrid() {
 	xGrid = [];
 	yGrid = [];
 	zGrid = [];
+	zGrid2 = [];
 	for (var x = 0; x <= N; ++x) {
 		for (var z = 0; z <= K; ++z) {
 			xGrid.push([-x * PIXELS_BY_CELL, 0, -z * PIXELS_BY_CELL]);
@@ -235,6 +254,35 @@ function initGrid() {
 		grid3d(yGrid),
 		grid3d(zGrid),
 	];
+	wallsUp = [];
+	wallsBack = [];
+	wallsLeft = [];
+	wallsRight = [];
+	wallsUp.push([{'x': 0, 'y': -mxY, 'z': 0},
+				 {'x': 0, 'y': -mxY, 'z': thickness},
+				 {'x': -mxX, 'y': -mxY, 'z': thickness},
+				 {'x': -mxX, 'y': -mxY, 'z': 0}]);
+	wallsUp.push([{'x': 0, 'y': -mxY, 'z': -mxZ},
+				 {'x': 0, 'y': -mxY, 'z': thickness},
+				 {'x': thickness, 'y': -mxY, 'z': thickness},
+				 {'x': thickness, 'y': -mxY, 'z': -mxZ}]);
+	wallsRight.push([{'x': -mxX, 'y': 0, 'z': 0},
+				 {'x': -mxX, 'y': 0, 'z': thickness},
+				 {'x': -mxX, 'y': -mxY, 'z': thickness},
+				 {'x': -mxX, 'y': -mxY, 'z': 0}]);
+	wallsLeft.push([{'x': 0, 'y': 0, 'z': -mxZ},
+				 {'x': thickness, 'y': 0, 'z': -mxZ},
+				 {'x': thickness, 'y': -mxY, 'z': -mxZ},
+				 {'x': 0, 'y': -mxY, 'z': -mxZ}]);
+	wallsBack.push([{'x': -mxX, 'y': 0, 'z': thickness},
+				 {'x': thickness, 'y': 0, 'z': thickness},
+				 {'x': thickness, 'y': -mxY, 'z': thickness},
+				 {'x': -mxX, 'y': -mxY, 'z': thickness}]);
+	wallsBack.push([{'x': thickness, 'y': 0, 'z': -mxZ},
+				 {'x': thickness, 'y': 0, 'z': thickness},
+				 {'x': thickness, 'y': -mxY, 'z': thickness},
+				 {'x': thickness, 'y': -mxY, 'z': -mxZ}]);
+	drawWalls(plane3d(wallsBack), 'WallsBack', 'transparent');
 	drawGrid(data);
 }
 
@@ -258,6 +306,8 @@ function redraw(beta, alpha) {
 		grid3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(yGrid),
 		grid3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(zGrid),
 	];
+	console.log(alpha - startAngleX);
+	drawWalls(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(wallsBack), 'WallsBack', 'transparent');
 	drawGrid(data);
 	drawPoints(point3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(points));
 	//drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(lines));
@@ -278,7 +328,7 @@ function redraw(beta, alpha) {
 						 {'x': -mxX, 'y': -1, 'z': current_state.X}]);
 		}
 		drawPlanes(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(planes));
-		drawCubes(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(current_state.cube));
+		drawCubes(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(current_state.cube), 'Cube', 'red');
 		if (current_state.current_min.length == 2) {
 			drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)([current_state.current_min]), 'curMin', 'black');
 		} else {
@@ -295,6 +345,9 @@ function redraw(beta, alpha) {
 			drawLines(line3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)([current_state.current_min]), 'curMin', 'black');
 		}
 	}
+	drawWalls(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(wallsUp), 'WallsUp', 'lightgrey');
+	drawWalls(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(wallsLeft), 'WallsLeft', '#919191');
+	drawWalls(plane3d.rotateY(beta + startAngleY).rotateX(alpha - startAngleX)(wallsRight), 'WallsRight', '#717171');
 	//d3.selectAll('._3d').sort(d3._3d().rotateY(beta + startAngleY).rotateX(alpha - startAngleX).sort);
 	//d3.selectAll('._3d').sort(d3._3d().sort);
 }
@@ -326,7 +379,11 @@ function dragEnd(){
 function init() {
 	initPrimitives();
 	initGrid();
-	initPoints();
+	initPoints();	
+	drawWalls(plane3d(wallsUp), 'WallsUp', 'lightgrey');
+	drawWalls(plane3d(wallsLeft), 'WallsLeft', '#919191');
+	drawWalls(plane3d(wallsRight), 'WallsRight', '#717171');
+	
 	//d3.selectAll('._3d').sort(d3._3d().rotateY(last_beta + startAngleY).rotateX(last_alpha - startAngleX).sort);
 	//d3.selectAll('._3d').sort(d3._3d().sort);
 }
