@@ -28,8 +28,8 @@ function buildRandomPointsOnclick() {
 	var maxX = get_int_field('maxX');
 	var maxY = get_int_field('maxY');
 	var maxZ = get_int_field('maxZ');
-	if (!inRange(1, MAX_N, n_points)) {
-		showError('sp1', 'n must be from 1 to {0}'.format(MAX_N));
+	if (!inRange(2, MAX_N, n_points)) {
+		showError('sp1', 'n must be from 2 to {0}'.format(MAX_N));
 		return;
 	}
 	if (!inRange(1, MAX_X, maxX)) {

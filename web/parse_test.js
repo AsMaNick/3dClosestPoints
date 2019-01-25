@@ -68,8 +68,8 @@ function parseTest(s) {
 		return ["Parameter 'n' should be integer", 0];
 	}
 	var n = parseInt(tmp[1]);
-	if (!check_interval(3, MAX_N, n)) {
-		return [interval_error(3, MAX_N, 'n'), 0];
+	if (!check_interval(2, MAX_N, n)) {
+		return [interval_error(2, MAX_N, 'n'), 0];
 	}
 	var points = [];
 	for (var i = 1; i <= n; ++i) {
