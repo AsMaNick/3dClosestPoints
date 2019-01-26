@@ -139,12 +139,19 @@ function rec(l, r) {
 						  [],
 						  -1,
 						  'Processing segment [{0}; {1}], X = {2}.'.format(l, r, -X)));
+	var pos1 = l, pos2 = l;
 	for (var i = mid + 1; i <= r; ++i) {
 		if (points[i].z - d > X) {
 			continue;
 		}
+		while (pos2 <= mid && points[pos2].y <= points[i].y + d) {
+			++pos2;
+		}
+		while (pos1 < pos2 && points[pos1].y < points[i].y - d) {
+			++pos1;
+		}
 		var was_point = false;
-		for (var j = l; j <= mid; ++j) {
+		for (var j = pos1; j < pos2; ++j) {
 			if (inRange(X - d, X, points[j].z) && 
 				inRange(points[i].y - d, points[i].y + d, points[j].y) && 
 				inRange(points[i].x - d, points[i].x + d, points[j].x)) {
