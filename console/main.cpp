@@ -8,8 +8,10 @@
 #include "reader.hpp"
 
 double dist(const point &p) {
-    return sqrt(1LL * p.x * p.x + 1LL * p.y * p.y +
-                1LL * p.z * p.z);
+    unsigned long long sq = 1LL * p.x * p.x;
+    sq += 1LL * p.y * p.y;
+    sq += 1LL * p.z * p.z;
+    return sqrt(sq);
 }
 
 double dist(const point &a, const point &b) {

@@ -4,7 +4,7 @@ import math
 
 def build(leg, y_lab, x, y, y2, leg1, leg2):
 	print(y2)
-	plt.xlabel('n')
+	plt.xlabel('log n')
 	plt.ylabel(y_lab)
 	# plt.ylim(0, max(y) * 1.2)
 	plt.plot(x, y, label=leg1)
