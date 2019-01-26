@@ -32,7 +32,7 @@ need_time = []
 need_memory = []
 for line in open('data.txt', 'r'):
 	n, time, memory = map(int, line.split(' '))
-	all_n.append(math.log2(n // 1000))
+	all_n.append(math.log2(n // 1000) + 10)
 	all_time.append(time)
 	all_memory.append(memory)
 	need_time.append(n * math.log(n) ** 2 / 80000)
