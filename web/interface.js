@@ -101,18 +101,13 @@ function addPointsManuallyOnclick() {
 	}
 }
 
-function addNewPointOnclick() {
-	if (visualization || !addPointsManuallyMode()) {
-		return;
-	}
-	
-	console.log(event);
-	
+function addNewPoint(need_x, need_y) {	
 	var best_distance = INF;
+	var MAX_ITERATIONS = 11111;
 	var best_point;
 	var iterations = 0;
-	while (best_distance > 2 && iterations < 111111) {
-		iterations += 1;
+	while (best_distance > 2 && iterations < MAX_ITERATIONS) {
+		++iterations;
 		var point = {
 			'x': -randInt(1, MAX_X),
 			'y': -randInt(1, MAX_Y),
@@ -120,7 +115,7 @@ function addNewPointOnclick() {
 			'id': points.length
 		};
 		var proj = point3d([point])[0];
-		var distance = getDistance2D(proj.projected.x, proj.projected.y, event.offsetX - transformX[current_scale], event.offsetY - transformY[current_scale]);
+		var distance = getDistance2D(proj.projected.x, proj.projected.y, need_x, need_y);
 		if (best_distance > distance) {
 			best_distance = distance;
 			best_point = point;
@@ -130,4 +125,13 @@ function addNewPointOnclick() {
 	points.push(best_point);
 	updateManualTest();
 	redraw(last_beta, last_alpha);
+}
+
+function addNewPointOnclick() {
+	if (visualization || !addPointsManuallyMode()) {
+		return;
+	}
+	var need_x = event.offsetX - transformX[current_scale];
+	var need_y = event.offsetY - transformY[current_scale];
+	setTimeout(function() { addNewPoint(need_x, need_y); }, 1);
 }
