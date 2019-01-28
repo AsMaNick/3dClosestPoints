@@ -48,6 +48,10 @@ function inRange(l, r, x) {
 	return l <= x && x <= r;
 }
 
+function inRangeStrict(l, r, x, eps) {
+	return l + eps < x && x + eps < r;
+}
+
 function updateManualTest() {
 	current_state = null;
 	clearBestPair();

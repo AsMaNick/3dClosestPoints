@@ -152,9 +152,9 @@ function rec(l, r) {
 		}
 		var was_point = false;
 		for (var j = pos1; j < pos2; ++j) {
-			if (inRange(X - d, X, points[j].z) && 
-				inRange(points[i].y - d, points[i].y + d, points[j].y) && 
-				inRange(points[i].x - d, points[i].x + d, points[j].x)) {
+			if (inRangeStrict(X - d, X, points[j].z, 1e-9) && 
+				inRangeStrict(points[i].y - d, points[i].y + d, points[j].y, 1e-9) && 
+				inRangeStrict(points[i].x - d, points[i].x + d, points[j].x, 1e-9)) {
 					
 				was_point = true;
 				var new_min = [points[i], points[j]];
