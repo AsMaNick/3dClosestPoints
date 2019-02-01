@@ -369,6 +369,11 @@ function dragged(){
 
 function dragEnd(){
 	if (autoRotation()) {
+		if (addPointsManuallyMode()) {
+			var need_x = event.offsetX - transformX[current_scale];
+			var need_y = event.offsetY - transformY[current_scale];
+			setTimeout(function() { addNewPoint(need_x, need_y); }, 1);
+		}
 		return;
 	}
 	mouseX = d3.event.x - mx + mouseX;
